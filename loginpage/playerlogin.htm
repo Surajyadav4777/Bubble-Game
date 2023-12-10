@@ -3,30 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Form </title>
+  <title>Login Form</title>
   <link rel="stylesheet" href="player.css">
 </head>
 <body>
   <div class="wrapper">
-    <form action="../index.html">
+    <form action="" method="post">
       <h2>Player Login</h2>
-        <div class="input-field">
-        <input type="text" required>
+      <div class="input-field">
+        <input type="text" name="player_name" required>
         <label>Player Name</label>
       </div>
       <div class="input-field">
-        <input type="date" required>
-        <label></label>
+        <input type="date" name="birth_date" required>
+        <label>Birth Date</label>
       </div>
       <div class="forget">
         <label for="remember">
-          <input type="checkbox" id="remember">
+          <input type="checkbox" id="remember" name="remember">
           <p>Remember me</p>
-       
+        </label>
       </div>
       <button type="submit">Log In</button>
-      
     </form>
   </div>
+
+  <?php
+$servername = "127.0.0.1"; 
+$username = "root";
+$password = ""; // Enter your MySQL root password here
+$dbname = "your_database_name"; // Replace with your actual database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Get user input from the form
+$playerName = $_POST['player_name'];
+$birthDate = $_POST['birth_date'];
+$remember = isset($_POST['remember']) ? 1 : 0;
+
+// Prepare and execute the SQL statement to insert data
+$sql = "INSERT INTO player_table (player_name, birth_date, remember) VALUES ('$playerName', '$birthDate', '$remember')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+// Close the connection
+$conn->close();
+?>
+
 </body>
 </html>
